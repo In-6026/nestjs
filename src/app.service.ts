@@ -1,9 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common'
+import { readFileSync } from 'fs'
+import { join } from 'path'
 
 @Injectable()
-export class AppService {
-  getHello(ip: string, HostParam: any): string {
-    console.log(HostParam)
-    return `Hello ${ip}`;
-  }
-}
+export class AppService { }
