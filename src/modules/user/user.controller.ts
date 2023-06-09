@@ -1,21 +1,24 @@
-import { Controller, Post, Get, Body } from '@nestjs/common'
+import { Controller, Post, Get, Body, UseInterceptors, Query, ClassSerializerInterceptor, Redirect } from '@nestjs/common'
 import { UserService } from './user.service'
-import { ApiTags, ApiBody } from '@nestjs/swagger'
-import { AddUserDto } from './dto/add-user.dto'
+import { ApiTags, ApiResponse } from '@nestjs/swagger'
+import { CreateUserDto, CreateUserResDto } from './dto/add-user.dto'
+import { DBresultInterceptor } from 'src/shared/interceptors/dbresult.interceptor'
 
 @ApiTags('user')
 @Controller('user')
 export class UserController {
     constructor(private readonly userService: UserService) { }
 
-    @ApiBody({ type: AddUserDto, description: '用户信息' })
+    @ApiResponse({ type: CreateUserResDto })
     @Post('/')
-    add(@Body() body: AddUserDto): Promise<Record<string, string>> {
-        return this.userService.add(body)
+    @UseInterceptors(new DBresultInterceptor({}))
+    create(@Body() body: CreateUserDto): Promise<CreateUserDto> {
+        return this.userService.create(body)
     }
 
+    @ApiResponse({ type: CreateUserResDto })
     @Get('/')
-    get(): Promise<Record<string, any>> {
-        return this.userService.get()
+    get(@Query('name') name: string): Promise<CreateUserDto[]> {
+        return this.userService.get(name)
     }
 }

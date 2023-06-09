@@ -3,14 +3,19 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { UserModule } from './modules/user/user.module'
 import { FileModule } from './modules/file/file.module'
+import { MyCacheModule } from './modules/cache/cache.module'
 import { TestMiddleware } from './common/middleware/test.middleware'
 import { MongooseModule } from '@nestjs/mongoose'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 
+const IS_DEV = process.env.NODE_ENV == 'dev'
+let envFilePath = []
+envFilePath.unshift(IS_DEV ? '.env.dev' : '.env.prod')
+
 @Module({
 	imports: [
 		ConfigModule.forRoot({
-			envFilePath: ['.env.development', '.env.production'],
+			envFilePath,
 			isGlobal: true
 		}),
 		MongooseModule.forRootAsync({
@@ -20,7 +25,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 			})
 		}),
 		UserModule,
-		FileModule
+		FileModule,
+		MyCacheModule
 	],
 	controllers: [AppController],
 	providers: [AppService]
@@ -28,9 +34,5 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 export class AppModule implements NestModule {
 	configure(consumer: MiddlewareConsumer) {
 		consumer.apply(TestMiddleware).forRoutes('/')
-	}
-
-	constructor(private configService:  ConfigService) {
-		console.log('this.configService: ',  this.configService.get('DATABASE_HOST'))
 	}
 }

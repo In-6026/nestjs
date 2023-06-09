@@ -4,8 +4,13 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 import { join } from 'path'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { UserModule } from './modules/user/user.module'
+import { MyCacheModule } from './modules/cache/cache.module'
+import { FileModule } from './modules/file/file.module'
 import * as session from 'express-session'
 import * as  cors from 'cors'
+import { ValidationPipe } from '@nestjs/common'
+import { GlobalExceptionsFilter } from './common/filter/global.exception.filter'
+import { FormateResponseInterceptor } from './shared/interceptors/format-response.interceptor'
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule)
@@ -17,11 +22,21 @@ async function bootstrap() {
 		.setVersion('1.0')
 		.addTag('user')
 		.addTag('file')
+		.addTag('cache')
 		.build()
 	const apiDoc = SwaggerModule.createDocument(app, apiOptions, {
-		include: [UserModule]
+		include: [UserModule, FileModule, MyCacheModule]
 	})
 	SwaggerModule.setup('api-doc', app, apiDoc)
+
+	// 格式化响应数据
+	app.useGlobalInterceptors(new FormateResponseInterceptor())
+
+	// 异常过滤器
+	app.useGlobalFilters(new GlobalExceptionsFilter())
+
+	// 参数校验
+	app.useGlobalPipes(new ValidationPipe())
 
 	// session
 	app.use(session({ secret: 'llc', name: 'lilianci', rolling: false, cookie: { maxAge: 5000 } }))
