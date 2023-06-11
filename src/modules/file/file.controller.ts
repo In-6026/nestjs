@@ -8,13 +8,13 @@ import { File } from 'buffer'
 @ApiTags('file')
 @Controller('file')
 export class FileController {
-    constructor(private readonly fileService: FileService) { }
+	constructor(private readonly fileService: FileService) {}
 
-    @ApiBody({ type: File, description: '文件' })
-    @Post('/upload')
-    @UseInterceptors(FileInterceptor('file'))
-    uploadFile(@UploadedFile() file: Express.Multer.File): string {
-        console.log('file: ', file)
-        return 'ok!!'
-    }
+	@ApiBody({ type: File, description: '文件' })
+	@Post('/upload')
+	@UseInterceptors(FileInterceptor('file'))
+	uploadFile(@UploadedFile() file: Express.Multer.File): string {
+		console.log('file: ', file)
+		return 'ok!!'
+	}
 }

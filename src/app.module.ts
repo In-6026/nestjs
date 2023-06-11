@@ -7,9 +7,12 @@ import { MyCacheModule } from './modules/cache/cache.module'
 import { TestMiddleware } from './common/middleware/test.middleware'
 import { MongooseModule } from '@nestjs/mongoose'
 import { ConfigModule, ConfigService } from '@nestjs/config'
+import { MyBullModule } from './modules/bull/bull.module'
+import { CokieModule } from './modules/cokie/cokie.module'
+// import { MyScheduleModule } from './modules/schedule/schedule.module'
 
 const IS_DEV = process.env.NODE_ENV == 'dev'
-let envFilePath = []
+const envFilePath = []
 envFilePath.unshift(IS_DEV ? '.env.dev' : '.env.prod')
 
 @Module({
@@ -26,7 +29,10 @@ envFilePath.unshift(IS_DEV ? '.env.dev' : '.env.prod')
 		}),
 		UserModule,
 		FileModule,
-		MyCacheModule
+		MyCacheModule,
+		// MyScheduleModule
+		MyBullModule,
+		CokieModule
 	],
 	controllers: [AppController],
 	providers: [AppService]

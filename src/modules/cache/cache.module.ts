@@ -6,13 +6,13 @@ import { MongooseModule } from '@nestjs/mongoose'
 import { User, UserSchema } from '../user/schemas/user.schema'
 
 @Module({
-    imports: [
-        CacheModule.register(),
-        MongooseModule.forFeature([
-            { name: User.name, schema: UserSchema, collection: 'user' }
-        ]),
-    ],
-    controllers: [CacheController],
-    providers: [CacheService],
+	imports: [
+		CacheModule.register(),
+		MongooseModule.forFeature([
+			{ name: User.name, schema: UserSchema, collection: 'user' }
+		])
+	],
+	controllers: [CacheController],
+	providers: [CacheService]
 })
-export class MyCacheModule { }
+export class MyCacheModule {}

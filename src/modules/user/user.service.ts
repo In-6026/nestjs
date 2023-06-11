@@ -6,7 +6,7 @@ import { CreateUserDto } from './dto/add-user.dto'
 
 @Injectable()
 export class UserService {
-	constructor(@InjectModel('User') private userModel: Model<UserDocument>,) { }
+	constructor(@InjectModel('User') private userModel: Model<UserDocument>) {}
 
 	create(userInfo: CreateUserDto): Promise<CreateUserDto> {
 		return new Promise((resolve, reject) => {
@@ -20,11 +20,10 @@ export class UserService {
 
 	get(name: string): Promise<CreateUserDto[]> {
 		return new Promise((resolve, rejects) => {
-			this.userModel.find({ name })
-				.then(
-					(result) => resolve(result),
-					(error) => rejects(error)
-				)
+			this.userModel.find({ name }).then(
+				(result) => resolve(result),
+				(error) => rejects(error)
+			)
 		})
 	}
 }

@@ -3,14 +3,14 @@ import { Document } from 'mongoose'
 
 @Schema()
 export class User extends Document {
-    @Prop({sparse: true})
-    name: string
+	@Prop({ sparse: true })
+	name: string
 
-    @Prop()
-    gender: string
+	@Prop()
+	gender: string
 
-    @Prop()
-    age: number
+	@Prop()
+	age: number
 }
 
 export type UserDocument = User & Document

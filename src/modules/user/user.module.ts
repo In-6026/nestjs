@@ -15,4 +15,4 @@ import { CacheModule } from '@nestjs/cache-manager'
 	controllers: [UserController],
 	providers: [UserService]
 })
-export class UserModule { }
+export class UserModule {}
