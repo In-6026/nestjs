@@ -12,6 +12,8 @@ import { ValidationPipe } from '@nestjs/common'
 import { GlobalExceptionsFilter } from './common/filter/global.exception.filter'
 import { FormateResponseInterceptor } from './shared/interceptors/format-response.interceptor'
 import * as cookieParser from 'cookie-parser'
+import * as compression from 'compression'
+
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -39,7 +41,7 @@ async function bootstrap() {
 	app.use(cookieParser())
 
 	// 格式化响应数据
-	app.useGlobalInterceptors(new FormateResponseInterceptor())
+	// app.useGlobalInterceptors(new FormateResponseInterceptor())
 
 	// 异常过滤器
 	app.useGlobalFilters(new GlobalExceptionsFilter())
@@ -63,6 +65,9 @@ async function bootstrap() {
 
 	// 静态资源托管
 	app.useStaticAssets(join(__dirname, '../public'), { prefix: '/public' })
+
+	// 压缩
+	app.use(compression())
 
 	// 启动
 	await app.listen(3000)

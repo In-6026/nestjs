@@ -9,6 +9,9 @@ import { MongooseModule } from '@nestjs/mongoose'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { MyBullModule } from './modules/bull/bull.module'
 import { CokieModule } from './modules/cokie/cokie.module'
+import { MittModule } from './modules/mitt/mitt.module'
+import { StremModule } from './modules/stream/strem.module'
+import { HtpModule } from './modules/htp/htp.module'
 // import { MyScheduleModule } from './modules/schedule/schedule.module'
 
 const IS_DEV = process.env.NODE_ENV == 'dev'
@@ -32,7 +35,10 @@ envFilePath.unshift(IS_DEV ? '.env.dev' : '.env.prod')
 		MyCacheModule,
 		// MyScheduleModule
 		MyBullModule,
-		CokieModule
+		CokieModule,
+		MittModule,
+		StremModule,
+		HtpModule
 	],
 	controllers: [AppController],
 	providers: [AppService]
